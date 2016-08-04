@@ -1,0 +1,42 @@
+\begin{algorithmic}[1]
+\Function{P $\gets$ inference}{$|$S$|$, T, obs\_vec[], state\_vec[]} 
+
+\State cond\_P\_obs $\gets 1$;
+\State P\_state $\gets 0$;
+\State F[$|$S$|$] $\gets$ \Call{new}{ }; 
+\State t $\gets 1$;
+\While{t $\leq$ T} 
+	\If{t $ == 1$}
+		\State P\_state $\gets$ \Call{compute\_P1}{\textvisiblespace};
+		\State F $\gets$ \Call{forward\_init}{\textvisiblespace};
+	\Else
+		\State P\_state *= \Call{tran}{state\_vec[t],state\_vec[t-1]};
+	\EndIf
+	\State cond\_P\_obs *= \Call{sensor}{obs\_vec[t],state\_vec[t]};
+	\State F $\gets$ \Call{forward\_updt}{t,obs\_vec[t]};
+	\State t++;
+\EndWhile
+
+\State P\_obs $\gets 0$;
+\ForAll{i $\in [1,\dots,|S|]$ } 
+	\State P\_obs += F[i];
+\EndFor
+\State \Return (cond\_P\_obs*P\_state)/P\_obs;
+
+\EndFunction
+% \STATE <text>
+% \IF{<condition>} \STATE{<text>} \ELSE \STATE{<text>} \ENDIF
+% \FOR{<condition>} \STATE{<text>} \ENDFOR
+% \FOR{<condition> \TO <condition> } \STATE{<text>} \ENDFOR
+% \FORALL{<condition>} \STATE{<text>} \ENDFOR
+% \WHILE{<condition>} \STATE{<text>} \ENDWHILE
+% \REPEAT \STATE{<text>} \UNTIL{<condition>}
+% \LOOP \STATE{<text>} \ENDLOOP
+% \REQUIRE <text>
+% \ENSURE <text>
+% \RETURN <text>
+% \PRINT <text>
+% \COMMENT{<text>}
+% \AND, \OR, \XOR, \NOT, \TO, \TRUE, \FALSE
+
+\end{algorithmic}
